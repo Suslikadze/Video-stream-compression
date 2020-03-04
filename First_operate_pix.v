@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module first_operation(
+module Recoding(
 input clk_old,
 input clk_new,
 input enable,
@@ -9,7 +9,7 @@ input newline,
 input [`address_cell_width - 1 : 0] data_in_pix, 
 output [`address_cell_width - 1 : 0] data_out,
 output [`bit_new_pix - 1 : 0] new_x,
-output [`bit_new_pix - 1 : 0] new_y,
+output [`bit_new_line - 1 : 0] new_y,
 output enable_next
 );
 
@@ -21,6 +21,14 @@ wire [`five_lines_address_buffer - 1 : 0][`address_cell_width - 1 : 0] pix_inter
 integer number_of_lines_new = 2 * `number_of_lines;
 integer counter = 0;
 reg enable_for_lines <= '0';
+//////////////////////////////////////////////////////////
+//Модуль vhdl RAM для динамичного прохода записи и чтения строк, передаем сначала две строки 
+//для первой операции, потом пять строк
+first_operation RAM_block(
+    .clock(clk_old),
+    .clk
+    .data_
+);
 //////////////////////////////////////////////////////////
 //Сдвиговый регист FIFO для удвоения пикселей
 always @(posedge clk_old) begin
@@ -58,7 +66,7 @@ always @(posedge newline) begin
 end
 //////////////////////////////////////////////////////////
 // Ждем, пока буфер для строки не заполнится до конца
-always @(posedge clk_old) begin
+always @(posedge туц) begin
     if (enable) begin
         if (counter < `number_of_lines) begin
             counter <= counter + 1;
